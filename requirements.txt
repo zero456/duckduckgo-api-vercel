@@ -9,7 +9,7 @@ curl_cffi==0.6.2
 duckduckgo_search==6.2.5
 Flask[async]==3.0.2
 gunicorn==21.2.0
-idna==3.6
+idna==3.7
 importlib_metadata==7.0.2
 itsdangerous==2.1.2
 Jinja2==3.1.4
