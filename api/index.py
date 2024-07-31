@@ -10,10 +10,6 @@ app = Flask(__name__)
 SECRET_KEY = os.getenv('SECRET_KEY')
 SAFESEARCH = os.getenv('SAFESEARCH', 'ON')  # Default to 'ON' if not set
 
-# Print SECRET_KEY and SAFESEARCH (for debugging purposes only)
-print(f"SECRET_KEY: {SECRET_KEY}")
-print(f"SAFESEARCH: {SAFESEARCH}")
-
 def check_authorization():
     # Get the Authorization header from the request
     auth_header = request.headers.get('Authorization')
@@ -31,11 +27,12 @@ def run():
     data = request.get_json()
     keywords = data.get('q', '')
     max_results = int(data.get('max_results', 10))
-    return keywords, max_results
+    model = data.get('model', 'claude-3-haiku')  # Default model if not specified
+    return keywords, max_results, model
 
 @app.route('/search', methods=['POST'])
 async def search():
-    keywords, max_results = run()
+    keywords, max_results, _ = run()
     if keywords is None:  # If authorization fails
         return jsonify({'error': 'Unauthorized access or missing required parameter: q'}), 403
     results = []
@@ -48,7 +45,7 @@ async def search():
 
 @app.route('/searchAnswers', methods=['POST'])
 async def search_answers():
-    keywords, max_results = run()
+    keywords, max_results, _ = run()
     if keywords is None:  # If authorization fails
         return jsonify({'error': 'Unauthorized access or missing required parameter: q'}), 403
     results = []
@@ -61,7 +58,7 @@ async def search_answers():
 
 @app.route('/searchImages', methods=['POST'])
 async def search_images():
-    keywords, max_results = run()
+    keywords, max_results, _ = run()
     if keywords is None:  # If authorization fails
         return jsonify({'error': 'Unauthorized access or missing required parameter: q'}), 403
     results = []
@@ -74,7 +71,7 @@ async def search_images():
 
 @app.route('/searchVideos', methods=['POST'])
 async def search_videos():
-    keywords, max_results = run()
+    keywords, max_results, _ = run()
     if keywords is None:  # If authorization fails
         return jsonify({'error': 'Unauthorized access or missing required parameter: q'}), 403
     results = []
