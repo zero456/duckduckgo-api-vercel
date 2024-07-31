@@ -28,17 +28,12 @@ def run():
     if not check_authorization():
         return None, 403  # Return 403 Forbidden status code
 
-    if request.method == 'POST':
-        data = request.get_json()
-        keywords = data.get('q', '')
-        max_results = int(data.get('max_results', 10))
-    else:
-        keywords = request.args.get('q')
-        max_results = int(request.args.get('max_results', 10))
+    data = request.get_json()
+    keywords = data.get('q', '')
+    max_results = int(data.get('max_results', 10))
     return keywords, max_results
 
-
-@app.route('/search', methods=['GET', 'POST'])
+@app.route('/search', methods=['POST'])
 async def search():
     keywords, max_results = run()
     results = []
@@ -49,8 +44,7 @@ async def search():
 
     return {'results': results}
 
-
-@app.route('/searchAnswers', methods=['GET', 'POST'])
+@app.route('/searchAnswers', methods=['POST'])
 async def search_answers():
     keywords, max_results = run()
     results = []
@@ -61,8 +55,7 @@ async def search_answers():
 
     return {'results': results}
 
-
-@app.route('/searchImages', methods=['GET', 'POST'])
+@app.route('/searchImages', methods=['POST'])
 async def search_images():
     keywords, max_results = run()
     results = []
@@ -73,8 +66,7 @@ async def search_images():
 
     return {'results': results}
 
-
-@app.route('/searchVideos', methods=['GET', 'POST'])
+@app.route('/searchVideos', methods=['POST'])
 async def search_videos():
     keywords, max_results = run()
     results = []
@@ -84,7 +76,6 @@ async def search_videos():
             results.append(r)
 
     return {'results': results}
-
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8000)
