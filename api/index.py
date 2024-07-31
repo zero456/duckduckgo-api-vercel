@@ -82,5 +82,17 @@ async def search_videos():
 
     return jsonify({'results': results})
 
+@app.route('/aichat', methods=['POST'])
+async def aichat():
+    keywords, _, model = run()
+    if keywords is None:  # If authorization fails
+        return jsonify({'error': 'Unauthorized access or missing required parameter: q'}), 403
+
+    with DDGS() as ddgs:
+        chat_result = ddgs.chat(keywords, model=model)
+        results = [chat_result]
+
+    return jsonify({'results': results})
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8000)
