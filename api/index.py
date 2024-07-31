@@ -13,7 +13,21 @@ SAFESEARCH = os.getenv('SAFESEARCH', 'ON')  # Default to 'ON' if not set
 # Print SECRET_KEY and SAFESEARCH (for debugging purposes only)
 print(f"SECRET_KEY: {SECRET_KEY}")
 print(f"SAFESEARCH: {SAFESEARCH}")
+
+def check_authorization():
+    # Get the Authorization header from the request
+    auth_header = request.headers.get('Authorization')
+
+    # Validate the Authorization header format and content
+    if auth_header != f'Bearer {SECRET_KEY}':
+        return False
+    return True
+
 def run():
+    # Perform authorization check before processing the request
+    if not check_authorization():
+        return None, 403  # Return 403 Forbidden status code
+
     if request.method == 'POST':
         keywords = request.form['q']
         max_results = int(request.form.get('max_results', 10))
