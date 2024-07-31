@@ -2,7 +2,7 @@ import os
 from itertools import islice
 
 from duckduckgo_search import DDGS
-from flask import Flask, request
+from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
@@ -36,46 +36,54 @@ def run():
 @app.route('/search', methods=['POST'])
 async def search():
     keywords, max_results = run()
+    if keywords is None:  # If authorization fails
+        return jsonify({'error': 'Unauthorized access or missing required parameter: q'}), 403
     results = []
     with DDGS() as ddgs:
         ddgs_gen = ddgs.text(keywords, safesearch=SAFESEARCH, timelimit='y', backend="lite")
         for r in islice(ddgs_gen, max_results):
             results.append(r)
 
-    return {'results': results}
+    return jsonify({'results': results})
 
 @app.route('/searchAnswers', methods=['POST'])
 async def search_answers():
     keywords, max_results = run()
+    if keywords is None:  # If authorization fails
+        return jsonify({'error': 'Unauthorized access or missing required parameter: q'}), 403
     results = []
     with DDGS() as ddgs:
         ddgs_gen = ddgs.answers(keywords)
         for r in islice(ddgs_gen, max_results):
             results.append(r)
 
-    return {'results': results}
+    return jsonify({'results': results})
 
 @app.route('/searchImages', methods=['POST'])
 async def search_images():
     keywords, max_results = run()
+    if keywords is None:  # If authorization fails
+        return jsonify({'error': 'Unauthorized access or missing required parameter: q'}), 403
     results = []
     with DDGS() as ddgs:
         ddgs_gen = ddgs.images(keywords, safesearch=SAFESEARCH, timelimit=None)
         for r in islice(ddgs_gen, max_results):
             results.append(r)
 
-    return {'results': results}
+    return jsonify({'results': results})
 
 @app.route('/searchVideos', methods=['POST'])
 async def search_videos():
     keywords, max_results = run()
+    if keywords is None:  # If authorization fails
+        return jsonify({'error': 'Unauthorized access or missing required parameter: q'}), 403
     results = []
     with DDGS() as ddgs:
         ddgs_gen = ddgs.videos(keywords, safesearch=SAFESEARCH, timelimit=None, resolution="high")
         for r in islice(ddgs_gen, max_results):
             results.append(r)
 
-    return {'results': results}
+    return jsonify({'results': results})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8000)
