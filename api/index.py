@@ -29,8 +29,9 @@ def run():
         return None, 403  # Return 403 Forbidden status code
 
     if request.method == 'POST':
-        keywords = request.form['q']
-        max_results = int(request.form.get('max_results', 10))
+        data = request.get_json()
+        keywords = data.get('q', '')
+        max_results = int(data.get('max_results', 10))
     else:
         keywords = request.args.get('q')
         max_results = int(request.args.get('max_results', 10))
