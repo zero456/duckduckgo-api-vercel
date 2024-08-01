@@ -44,6 +44,19 @@ async def search(request: Request):
 
     return JSONResponse(content={'results': results})
 
+@app.post('/searchNews')
+async def search_news(request: Request):
+    keywords, max_results, _ = await run(request)
+    if keywords is None:  # If authorization fails
+        raise HTTPException(status_code=403, detail="Missing required parameter: q")
+    results = []
+    with DDGS() as ddgs:
+        ddgs_gen = ddgs.news(keywords, safesearch=SAFESEARCH, timelimit='y')
+        for r in islice(ddgs_gen, max_results):
+            results.append(r)
+
+    return JSONResponse(content={'results': results})
+
 @app.post('/searchAnswers')
 async def search_answers(request: Request):
     keywords, max_results, _ = await run(request)
