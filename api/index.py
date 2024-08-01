@@ -36,8 +36,6 @@ async def search(request: Request):
     if keywords is None:  # If authorization fails
         raise HTTPException(status_code=403, detail="Missing required parameter: q")
     
-    max_results = int(max_results) if max_results is not None else 10
-    
     results = []
     with DDGS() as ddgs:
         ddgs_gen = ddgs.text(keywords, safesearch=SAFESEARCH, timelimit='y', max_results=max_results)
@@ -50,8 +48,6 @@ async def search_news(request: Request):
     keywords, max_results, _ = await run(request)
     if keywords is None:  # If authorization fails
         raise HTTPException(status_code=403, detail="Missing required parameter: q")
-    
-    max_results = int(max_results) if max_results is not None else 10
     
     results = []
     with DDGS() as ddgs:
@@ -79,8 +75,6 @@ async def search_images(request: Request):
     if keywords is None:  # If authorization fails
         raise HTTPException(status_code=403, detail="Missing required parameter: q")
     
-    max_results = int(max_results) if max_results is not None else 10
-    
     results = []
     with DDGS() as ddgs:
         ddgs_gen = ddgs.images(keywords, safesearch=SAFESEARCH, timelimit='y', max_results=max_results)
@@ -93,8 +87,6 @@ async def search_videos(request: Request):
     keywords, max_results, _ = await run(request)
     if keywords is None:  # If authorization fails
         raise HTTPException(status_code=403, detail="Missing required parameter: q")
-    
-    max_results = int(max_results) if max_results is not None else 10
     
     results = []
     with DDGS() as ddgs:
