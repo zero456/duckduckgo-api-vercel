@@ -1,5 +1,4 @@
 import os
-from itertools import islice
 
 from duckduckgo_search import DDGS
 from fastapi import FastAPI, Request, HTTPException
@@ -36,11 +35,13 @@ async def search(request: Request):
     keywords, max_results, _ = await run(request)
     if keywords is None:  # If authorization fails
         raise HTTPException(status_code=403, detail="Missing required parameter: q")
+    
+    max_results = int(max_results) if max_results is not None else 10
+    
     results = []
     with DDGS() as ddgs:
-        ddgs_gen = ddgs.text(keywords, safesearch=SAFESEARCH, timelimit='y')
-        for r in islice(ddgs_gen, max_results):
-            results.append(r)
+        ddgs_gen = ddgs.text(keywords, safesearch=SAFESEARCH, timelimit='y', max_results=max_results)
+        results.append(ddgs_gen)
 
     return JSONResponse(content={'results': results})
 
@@ -49,11 +50,13 @@ async def search_news(request: Request):
     keywords, max_results, _ = await run(request)
     if keywords is None:  # If authorization fails
         raise HTTPException(status_code=403, detail="Missing required parameter: q")
+    
+    max_results = int(max_results) if max_results is not None else 10
+    
     results = []
     with DDGS() as ddgs:
-        ddgs_gen = ddgs.news(keywords, safesearch=SAFESEARCH, timelimit='y')
-        for r in islice(ddgs_gen, max_results):
-            results.append(r)
+        ddgs_gen = ddgs.news(keywords, safesearch=SAFESEARCH, timelimit='y', max_results=max_results)
+        results.append(ddgs_gen)
 
     return JSONResponse(content={'results': results})
 
@@ -62,11 +65,11 @@ async def search_answers(request: Request):
     keywords, max_results, _ = await run(request)
     if keywords is None:  # If authorization fails
         raise HTTPException(status_code=403, detail="Missing required parameter: q")
+
     results = []
     with DDGS() as ddgs:
         ddgs_gen = ddgs.answers(keywords)
-        for r in islice(ddgs_gen, max_results):
-            results.append(r)
+        results.append(ddgs_gen)
 
     return JSONResponse(content={'results': results})
 
@@ -75,11 +78,13 @@ async def search_images(request: Request):
     keywords, max_results, _ = await run(request)
     if keywords is None:  # If authorization fails
         raise HTTPException(status_code=403, detail="Missing required parameter: q")
+    
+    max_results = int(max_results) if max_results is not None else 10
+    
     results = []
     with DDGS() as ddgs:
-        ddgs_gen = ddgs.images(keywords, safesearch=SAFESEARCH, timelimit=None)
-        for r in islice(ddgs_gen, max_results):
-            results.append(r)
+        ddgs_gen = ddgs.images(keywords, safesearch=SAFESEARCH, timelimit='y', max_results=max_results)
+        results.append(ddgs_gen)
 
     return JSONResponse(content={'results': results})
 
@@ -88,11 +93,13 @@ async def search_videos(request: Request):
     keywords, max_results, _ = await run(request)
     if keywords is None:  # If authorization fails
         raise HTTPException(status_code=403, detail="Missing required parameter: q")
+    
+    max_results = int(max_results) if max_results is not None else 10
+    
     results = []
     with DDGS() as ddgs:
-        ddgs_gen = ddgs.videos(keywords, safesearch=SAFESEARCH, timelimit=None, resolution="high")
-        for r in islice(ddgs_gen, max_results):
-            results.append(r)
+        ddgs_gen = ddgs.videos(keywords, safesearch=SAFESEARCH, timelimit='y', max_results=max_results)
+        results.append(ddgs_gen)
 
     return JSONResponse(content={'results': results})
 
@@ -104,7 +111,7 @@ async def aichat(request: Request):
 
     results = []
     with DDGS() as ddgs:
-        chat_result = ddgs.chat(keywords, model=model)
-        results.append(chat_result)
+        ddgs_gen = ddgs.chat(keywords, model=model)
+        results.append(ddgs_gen)
 
     return JSONResponse(content={'results': results})
