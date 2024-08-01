@@ -38,7 +38,7 @@ async def search(request: Request):
         raise HTTPException(status_code=403, detail="Missing required parameter: q")
     results = []
     with DDGS() as ddgs:
-        ddgs_gen = ddgs.text(keywords, safesearch=SAFESEARCH, timelimit='y', backend="lite")
+        ddgs_gen = ddgs.text(keywords, safesearch=SAFESEARCH, timelimit='y')
         for r in islice(ddgs_gen, max_results):
             results.append(r)
 
