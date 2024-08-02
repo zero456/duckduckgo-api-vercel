@@ -8,7 +8,7 @@ app = FastAPI()
 
 # Retrieve SECRET_KEY and SAFESEARCH from environment variables
 SECRET_KEY = os.getenv('SECRET_KEY')
-SAFESEARCH = os.getenv('SAFESEARCH', 'moderate')  # Default to 'ON' if not set
+SAFESEARCH = os.getenv('SAFESEARCH', 'moderate')
 
 def check_authorization(request: Request):
     # Get the Authorization header from the request
