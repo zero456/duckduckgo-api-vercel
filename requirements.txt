@@ -10,7 +10,7 @@ duckduckgo_search==6.2.5
 Flask[async]==3.0.2
 gunicorn==22.0.0
 idna==3.7
-importlib_metadata==7.0.2
+importlib_metadata==8.2.0
 itsdangerous==2.2.0
 Jinja2==3.1.4
 lxml==5.2.2
