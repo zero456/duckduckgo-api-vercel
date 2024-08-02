@@ -38,7 +38,7 @@ async def search(request: Request):
     
     results = []
     with DDGS() as ddgs:
-        ddgs_gen = ddgs.text(keywords, safesearch=SAFESEARCH, timelimit='y', max_results=max_results)
+        ddgs_gen = ddgs.text(keywords, safesearch=SAFESEARCH, max_results=max_results)
         results.append(ddgs_gen)
 
     return JSONResponse(content={'results': results})
@@ -51,7 +51,7 @@ async def search_news(request: Request):
     
     results = []
     with DDGS() as ddgs:
-        ddgs_gen = ddgs.news(keywords, safesearch=SAFESEARCH, timelimit='y', max_results=max_results)
+        ddgs_gen = ddgs.news(keywords, safesearch=SAFESEARCH, max_results=max_results)
         results.append(ddgs_gen)
 
     return JSONResponse(content={'results': results})
@@ -77,7 +77,7 @@ async def search_images(request: Request):
     
     results = []
     with DDGS() as ddgs:
-        ddgs_gen = ddgs.images(keywords, safesearch=SAFESEARCH, timelimit='y', max_results=max_results)
+        ddgs_gen = ddgs.images(keywords, safesearch=SAFESEARCH, max_results=max_results)
         results.append(ddgs_gen)
 
     return JSONResponse(content={'results': results})
@@ -90,7 +90,7 @@ async def search_videos(request: Request):
     
     results = []
     with DDGS() as ddgs:
-        ddgs_gen = ddgs.videos(keywords, safesearch=SAFESEARCH, timelimit='y', max_results=max_results)
+        ddgs_gen = ddgs.videos(keywords, safesearch=SAFESEARCH, max_results=max_results)
         results.append(ddgs_gen)
 
     return JSONResponse(content={'results': results})
