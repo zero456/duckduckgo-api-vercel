@@ -36,12 +36,9 @@ async def search(request: Request):
     if keywords is None:  # If authorization fails
         raise HTTPException(status_code=403, detail="Missing required parameter: q")
     
-    results = []
     with DDGS() as ddgs:
         ddgs_gen = ddgs.text(keywords, safesearch=SAFESEARCH, max_results=max_results)
-        results.append(ddgs_gen)
-
-    return JSONResponse(content={'results': results})
+        return JSONResponse(content={'results': ddgs_gen})
 
 @app.post('/searchNews')
 async def search_news(request: Request):
@@ -49,12 +46,9 @@ async def search_news(request: Request):
     if keywords is None:  # If authorization fails
         raise HTTPException(status_code=403, detail="Missing required parameter: q")
     
-    results = []
     with DDGS() as ddgs:
         ddgs_gen = ddgs.news(keywords, safesearch=SAFESEARCH, max_results=max_results)
-        results.append(ddgs_gen)
-
-    return JSONResponse(content={'results': results})
+        return JSONResponse(content={'results': ddgs_gen})
 
 @app.post('/searchAnswers')
 async def search_answers(request: Request):
@@ -62,12 +56,9 @@ async def search_answers(request: Request):
     if keywords is None:  # If authorization fails
         raise HTTPException(status_code=403, detail="Missing required parameter: q")
 
-    results = []
     with DDGS() as ddgs:
         ddgs_gen = ddgs.answers(keywords)
-        results.append(ddgs_gen)
-
-    return JSONResponse(content={'results': results})
+        return JSONResponse(content={'results': ddgs_gen})
 
 @app.post('/searchImages')
 async def search_images(request: Request):
@@ -75,12 +66,9 @@ async def search_images(request: Request):
     if keywords is None:  # If authorization fails
         raise HTTPException(status_code=403, detail="Missing required parameter: q")
     
-    results = []
     with DDGS() as ddgs:
         ddgs_gen = ddgs.images(keywords, safesearch=SAFESEARCH, max_results=max_results)
-        results.append(ddgs_gen)
-
-    return JSONResponse(content={'results': results})
+        return JSONResponse(content={'results': ddgs_gen})
 
 @app.post('/searchVideos')
 async def search_videos(request: Request):
@@ -88,12 +76,9 @@ async def search_videos(request: Request):
     if keywords is None:  # If authorization fails
         raise HTTPException(status_code=403, detail="Missing required parameter: q")
     
-    results = []
     with DDGS() as ddgs:
         ddgs_gen = ddgs.videos(keywords, safesearch=SAFESEARCH, max_results=max_results)
-        results.append(ddgs_gen)
-
-    return JSONResponse(content={'results': results})
+        return JSONResponse(content={'results': ddgs_gen})
 
 @app.post('/aichat')
 async def aichat(request: Request):
@@ -101,9 +86,6 @@ async def aichat(request: Request):
     if keywords is None:  # If authorization fails
         raise HTTPException(status_code=403, detail="Missing required parameter: q")
 
-    results = []
     with DDGS() as ddgs:
         ddgs_gen = ddgs.chat(keywords, model=model)
-        results.append(ddgs_gen)
-
-    return JSONResponse(content={'results': results})
+        return JSONResponse(content={'results': ddgs_gen})
