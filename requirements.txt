@@ -13,7 +13,7 @@ idna==3.7
 importlib_metadata==8.2.0
 itsdangerous==2.2.0
 Jinja2==3.1.4
-lxml==5.2.2
+lxml==5.3.0
 MarkupSafe==2.1.5
 packaging==24.1
 pycparser==2.22
