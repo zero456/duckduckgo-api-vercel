@@ -19,7 +19,7 @@ packaging==24.1
 pycparser==2.22
 requests==2.32.3
 urllib3==2.2.2
-Werkzeug==3.0.3
+Werkzeug==3.0.4
 zipp==3.20.0
 fastapi==0.114.0
 uvicorn==0.30.6
